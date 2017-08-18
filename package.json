@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/JackAnansi/kollab#readme",
   "dependencies": {
+    "express": "^4.15.4",
     "mysql": "^2.14.1"
   }
 }
