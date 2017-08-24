@@ -1,8 +1,37 @@
+/* Global Styles */
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #407BA5;
 }
 
+/* Link Styles */
 a {
   color: #00B7FF;
+}
+
+/* Text Styles */
+h1, h2, h3, h4 {
+  color: #E9E9E9;
+}
+
+h1 {
+  font-size: 6em;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+p {
+  color: #939393;
+  font-size: 1.2em;
+}
+
+
+/* Classes */
+.main {
+  background-color: #1c3f58;
+  border-radius: 2em;
+  padding: 2em;
+  margin: 5%;
 }
