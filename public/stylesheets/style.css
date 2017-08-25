@@ -1,7 +1,7 @@
 /* Global Styles */
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-color: #407BA5;
+  background-color: #eff2f5;
 }
 
 /* Link Styles */
@@ -27,11 +27,45 @@ p {
   font-size: 1.2em;
 }
 
+hr {
+  width: 95%;
+}
+
 
 /* Classes */
 .main {
-  background-color: #1c3f58;
+  background-color: #283138;
   border-radius: 2em;
   padding: 2em;
   margin: 5%;
+}
+
+.footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  color: floralwhite;
+  background-color: #4A67EB;
+  text-align: center;
+}
+
+.bullet-points {
+  margin: 20px;
+}
+
+.bullet-points ul {
+    -moz-column-count: 2;
+    -moz-column-gap: 20px;
+    -webkit-column-count: 2;
+    -webkit-column-gap: 20px;
+    column-count: 2;
+    column-gap: 20px;
+}
+
+.bullet-points li {
+  color: white;
+  font-size: 1.5em;
+  padding: 5%;
 }
