@@ -5,14 +5,31 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var config = require('./config');
 var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
 
+var connection = require('express-myconnection');
+var mysql = require('mysql');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+
+//mysql connection
+app.use(
+
+  connection(mysql,{
+    host: config.host,
+    user: config.user,
+    password: config.password,
+    port: config.port,
+    database: config.database
+  },'pool')
+
+);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
