@@ -10,6 +10,7 @@ var config = require('./config');
 var version = require('./version');
 var index = require('./routes/index');
 var users = require('./routes/users');
+var tasks = require('./routes/tasks');
 var kollab = require('./routes/kollab');
 
 var app = express();
@@ -98,6 +99,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/tasks', tasks);
 app.use('/kollab', kollab);
 
 // catch 404 and forward to error handler
