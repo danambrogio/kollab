@@ -4,10 +4,13 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var fs = require('fs');
 
 var config = require('./config');
+var version = require('./version');
 var index = require('./routes/index');
 var users = require('./routes/users');
+var tasks = require('./routes/tasks');
 var kollab = require('./routes/kollab');
 
 var app = express();
@@ -19,7 +22,61 @@ var mysql = require('mysql');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-//mysql connection
+
+//initialize mysql DB, create tables, migrate DB schema
+var initConnection = mysql.createConnection({
+  host: config.host,
+  user: config.user,
+  password: config.password,
+  port: config.port,
+  multipleStatements: true
+})
+
+initConnection.query('CREATE DATABASE IF NOT EXISTS ' + config.database, function (err) {
+    if (err) throw err;
+
+    initConnection.query('USE ' + config.database, function (err) {
+        if (err) throw err;
+
+        //check if settings table exists
+        initConnection.query('SELECT * FROM information_schema.tables WHERE `table_schema` = \''  + config.database + '\' AND `table_name` = \'settings\'', function (err, rows) {
+          
+          if (rows.length) { //settings table exists
+            //TODO: check settings db_version and upgrade database schema here
+            initConnection.query('SELECT * FROM settings WHERE `key` = \'db_version\'', function (err, rows){
+
+              for (var version = rows[0].value; version < version.db; version++) {
+                var alterScriptNumber = version + 1;
+                console.log('migrating db schema to version: ' + runAlterScript);
+                var loadAlterScript = fs.readFileSync('scripts/migrate' + alterScriptNumber + '.sql', {encoding: 'utf8'});
+                initConnection.query(loadAlterScript, function (err){
+                  if (err) throw err;
+                  console.log('..finished')
+                })
+
+              }
+            })
+
+
+          }
+          else { //settings table does not exist
+            var createTables = fs.readFileSync('scripts/createTables.sql', { encoding: 'utf8' });
+            console.log('creating new database tables');
+
+            initConnection.query(createTables, function (err){
+              if (err) throw err;
+              console.log('database tables created')
+            })
+
+          }
+
+        });
+
+    });
+});
+
+
+//express-myconnection middleware: mysql pool
 app.use(
 
   connection(mysql,{
@@ -42,6 +99,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/tasks', tasks);
 app.use('/kollab', kollab);
 
 // catch 404 and forward to error handler

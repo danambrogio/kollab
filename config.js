@@ -3,7 +3,8 @@ var config = {
   user: 'root',
   password : '',
   port : 3306, //port mysql
-  database: 'kollabdatabase'
+  database: 'kollabdatabase',
+  resetDB: false
 }
 
 module.exports = config;
